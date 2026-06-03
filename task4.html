@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Users</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#f4f4f4;padding:20px}
+#container{display:flex;flex-wrap:wrap;gap:20px;justify-content:center}
+
+.card{
+    width:300px;
+    background:#fff;
+    padding:15px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.15);
+    text-align:center;
+}
+
+img{
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    margin-bottom:10px;
+}
+
+.details{display:none;text-align:left;margin-top:10px}
+p{margin:5px 0}
+button{
+    margin-top:10px;
+    padding:6px 12px;
+    border:none;
+    background:#2563eb;
+    color:white;
+    border-radius:5px;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div id="container"></div>
+
+<script>
+const container = document.getElementById("container");
+
+fetch("https://dummyjson.com/users")
+.then(res => res.json())
+.then(data => {
+    data.users.forEach(u => {
+        const card = document.createElement("div");
+        card.className = "card";
+
+        card.innerHTML = `
+            <img src="${u.image}">
+            <h3>${u.firstName} ${u.lastName}</h3>
+            <p>${u.email}</p>
+
+            <div class="details">
+                <p>Age: ${u.age}</p>
+                <p>Phone: ${u.phone}</p>
+                <p>City: ${u.address.city}</p>
+            </div>
+
+            <button>View More</button>
+        `;
+
+        const btn = card.querySelector("button");
+        const details = card.querySelector(".details");
+
+        btn.onclick = () => {
+            details.style.display =
+            details.style.display === "block" ? "none" : "block";
+        };
+
+        container.appendChild(card);
+    });
+});
+</script>
+
+</body>
+</html>
